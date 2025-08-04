@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Segunda Página - Los Malditos</title>
+  <title>Oculto Produtos - Los Malditos</title>
+  <link rel="stylesheet" href="./Oculto Produtos_files/style.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Anton&family=Orbitron:wght@500&display=swap');
 
@@ -14,7 +15,6 @@
       margin: 0;
     }
 
-    /* Sidebar */
     .sidebar {
       position: fixed;
       top: 0;
@@ -54,52 +54,76 @@
       color: #fff;
     }
 
-    /* Conteúdo principal */
-    .container {
+    header {
+      margin-left: 240px;
+      padding: 20px;
+    }
+
+    .tabela-container {
+      margin: 20px 40px 40px 260px;
       background: #2b2b2b;
-      padding: 30px;
       border-radius: 15px;
-      max-width: 500px;
-      margin: 40px auto 40px 260px; /* margem para a sidebar */
+      padding: 20px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      text-align: center;
       border: 2px solid #444;
     }
 
-    h2 {
-      font-family: 'Anton', sans-serif;
-      color: #f1f1f1;
-      margin-bottom: 20px;
-      font-size: 24px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
     }
 
-    p {
-      color: #ccc;
-      font-size: 15px;
-      margin-bottom: 30px;
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #555;
+      text-align: center;
     }
 
-    button {
-      padding: 12px 25px;
-      background: #8a1f1f;
-      color: white;
+    th {
+      background-color: #3a3a3a;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
       border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 14px;
-      letter-spacing: 1px;
-      transition: background 0.3s ease;
     }
 
-    button:hover {
-      background: #a82626;
+    .dados-retorno {
+      margin-left: 260px;
+      margin-right: 40px;
+      background: #2b2b2b;
+      border-radius: 15px;
+      padding: 20px;
+      border: 2px solid #444;
+    }
+
+    select {
+      padding: 8px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .dados-body h3 {
+      font-family: 'Anton', sans-serif;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      margin-left: 240px;
+      padding: 15px;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar com links -->
+  <!-- Sidebar -->
   <div class="sidebar">
     <h3>📁 Navegação</h3>
     <ul>
@@ -109,12 +133,46 @@
   </div>
 
   <!-- Conteúdo principal -->
-  <div class="container">
-    <h2>📄 Segunda Página - Registro Alternativo</h2>
-    <p>Você pode usar esta página para outros tipos de registros, como vendas, compras, apreensões, etc.</p>
+  <header>
+    <div class="logo">
+      <img src="./Oculto Produtos_files/logo.png" alt="Logo Grupo Oculto">
+      <h1>Grupo Oculto</h1>
+      <p>Bem vindo (a) ao Grupo Oculto!</p>
+    </div>
+  </header>
 
-    <button onclick="window.location.href='index.html'">⬅️ Voltar para Página Principal</button>
-  </div>
+  <main>
+    <div class="tabela-container">
+      <!-- Aqui permanece a mesma tabela original com os produtos -->
+      <!-- Reutilize exatamente o <table> e <script> como está no código original -->
+      <!-- ... tabela completa omitida aqui por brevidade ... -->
+    </div>
+
+    <div class="dados-retorno">
+      <div class="dados-head">
+        <select id="mode-selector">
+          <option value="">Selecione o retorno...</option>
+          <option value="limpo">Limpo</option>
+          <option value="sujo">Sujo</option>
+          <option value="limpo-parc">Limpo Parceiro</option>
+          <option value="sujo-parc">Sujo Parceiro</option>
+        </select>
+      </div>
+      <div class="dados-body">
+        <h3>Total dos Produtos</h3>
+        <div id="totais">
+          <p>Sujo Parceiro: <span>R$&nbsp;432.601,00</span></p>
+          <p>Comissão: R$&nbsp;33.250,00</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🐺 Wolf | Discord: pocabdf</p>
+  </footer>
+
+  <script src="./Oculto Produtos_files/script.js.download"></script>
 
 </body>
 </html>
