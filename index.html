@@ -46,7 +46,7 @@
       background-color: #292929;
     }
 
-    input[type="text"], input[type="file"] {
+    input[type="text"] {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
@@ -89,7 +89,6 @@
     <input type="text" id="qualVeiculo" placeholder="Qual veículo?" required>
 
     <div class="paste-box" id="pasteBox">📸 Clique aqui e cole a print (Ctrl+V)</div>
-    <input type="file" id="fileInput" accept="image/*">
     
     <button onclick="uploadToDiscord()">Enviar imagem</button>
     <p id="status"></p>
@@ -97,10 +96,9 @@
 
   <script>
     let imageFile = null;
-    const webhookURL ='https://discord.com/api/webhooks/1400936108434391132/moZC9CNnNzNQlRfK9pjq8iIIucC7q3f-B0u4-VU40Z6GsW1F90PnYskV6BSvu-rDv03D'; // Substitua pelo seu
+    const webhookURL = 'https://discord.com/api/webhooks/1400936108434391132/moZC9CNnNzNQlRfK9pjq8iIIucC7q3f-B0u4-VU40Z6GsW1F90PnYskV6BSvu-rDv03D';
 
     const pasteBox = document.getElementById('pasteBox');
-    const fileInput = document.getElementById('fileInput');
     const status = document.getElementById('status');
 
     pasteBox.addEventListener('click', () => pasteBox.focus());
@@ -117,17 +115,12 @@
       pasteBox.textContent = "❌ Nenhuma imagem encontrada no Ctrl+V.";
     });
 
-    fileInput.addEventListener('change', () => {
-      imageFile = fileInput.files[0];
-      pasteBox.textContent = "🖼️ Imagem selecionada com sucesso!";
-    });
-
     async function uploadToDiscord() {
       const quem = document.getElementById('quemDesmanchou').value.trim();
       const veiculo = document.getElementById('qualVeiculo').value.trim();
 
       if (!imageFile) {
-        status.textContent = "❗ Cole ou selecione uma imagem primeiro.";
+        status.textContent = "❗ Cole uma imagem primeiro.";
         return;
       }
 
@@ -152,7 +145,6 @@
           status.textContent = "✅ Enviado com sucesso para o Discord!";
           pasteBox.textContent = "📸 Cole uma nova imagem com Ctrl+V";
           imageFile = null;
-          fileInput.value = "";
           document.getElementById('quemDesmanchou').value = "";
           document.getElementById('qualVeiculo').value = "";
         } else {
