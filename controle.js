@@ -207,3 +207,24 @@ function limparFormulario() {
 }
 document.querySelectorAll('input[type="number"]').forEach(input => input.value = 0);
 document.getElementById('totais').innerText = 'Selecione um modo de cálculo';
+
+function atualizarColunasPorModo(modoSelecionado) {
+  const colunas = {
+    limpo: document.querySelectorAll('.col-limpo'),
+    sujo: document.querySelectorAll('.col-sujo'),
+    'Limpo-Parceiro': document.querySelectorAll('.col-limpo-parceiro'),
+    'Sujo-Parceiro': document.querySelectorAll('.col-sujo-parceiro'),
+  };
+
+  // Oculta todas
+  Object.values(colunas).forEach(coluna => {
+    coluna.forEach(celula => celula.style.display = 'none');
+  });
+
+  // Mostra apenas a coluna do modo escolhido
+  if (colunas[modoSelecionado]) {
+    colunas[modoSelecionado].forEach(celula => celula.style.display = 'table-cell');
+  }
+
+  atualizarTotal(); // Atualiza o valor total exibido
+}
