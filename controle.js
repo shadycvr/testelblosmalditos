@@ -17,7 +17,6 @@ const produtos = [
   { nome: "Pager", limpo: 40000, sujo: 52000, LimpoParceiro: 30000, SujoParceiro: 39000 },
   { nome: "Chip", limpo: 3000, sujo: 2500, LimpoParceiro: 2000, SujoParceiro: 1500 }
 ];
-<script src="config.js"></script>
 const quantidades = new Array(produtos.length).fill(0);
 
 function getValorUnit(produto, modo) {
@@ -174,7 +173,7 @@ if (!isNaN(proximoNumero)) {
 
   botao.disabled = true;
   botao.innerText = "⏳ Enviando...";
-  fetch(webhookURL, {
+  fetch(webhookURL = "config.js", { 
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content: mensagem })
