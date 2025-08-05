@@ -23,21 +23,22 @@ const seletorModo = document.getElementById("mode-selector");
 const divTotais = document.getElementById("totais");
 const tabelaProdutos = document.getElementById("produtos");
 
-// Geração da tabela
+// Gera a tabela dinamicamente
 produtos.forEach((produto, index) => {
   const tr = document.createElement("tr");
   tr.innerHTML = `
     <td>${produto.nome}</td>
-    <td>R$ ${produto.limpo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-    <td>R$ ${produto.sujo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-    <td>R$ ${produto.LimpoParceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-    <td>R$ ${produto.SujoParceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-    <td><div class="quantidade-wrapper">
-    <button onclick="incrementarQuantidade(${index}, -1)">−</button>
-    <input type="number" min="0" value="0" onchange="atualizaValor(${index}, this.value)" id="input-qtd-${index}">
-    <button onclick="incrementarQuantidade(${index}, 1)">+</button>
-  </div>
-</td>
+    <td class="preco preco-limpo">R$ ${produto.limpo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+    <td class="preco preco-sujo">R$ ${produto.sujo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+    <td class="preco preco-limpoparceiro">R$ ${produto.LimpoParceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+    <td class="preco preco-sujoparceiro">R$ ${produto.SujoParceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+    <td>
+      <div class="quantidade-wrapper">
+        <button onclick="incrementarQuantidade(${index}, -1)">−</button>
+        <input type="number" min="0" value="0" onchange="atualizaValor(${index}, this.value)" id="input-qtd-${index}">
+        <button onclick="incrementarQuantidade(${index}, 1)">+</button>
+      </div>
+    </td>
   `;
   tabelaProdutos.appendChild(tr);
 });
@@ -56,16 +57,41 @@ function atualizaValor(index, quantidade) {
   quantidades[index] = parseInt(quantidade) || 0;
   atualizarTotais();
 }
+
 function incrementarQuantidade(index, delta) {
   const input = document.getElementById(`input-qtd-${index}`);
   let valorAtual = parseInt(input.value) || 0;
-  let novoValor = Math.max(0, valorAtual + delta); // Evita negativos
+  let novoValor = Math.max(0, valorAtual + delta);
   input.value = novoValor;
   atualizaValor(index, novoValor);
 }
 
+function atualizarVisibilidadeColunas(modo) {
+  const mapModoClasse = {
+    limpo: 'preco-limpo',
+    sujo: 'preco-sujo',
+    'Limpo-Parceiro': 'preco-limpoparceiro',
+    'Sujo-Parceiro': 'preco-sujoparceiro'
+  };
+
+  document.querySelectorAll('.preco').forEach(td => td.style.display = 'none');
+
+  if (mapModoClasse[modo]) {
+    document.querySelectorAll(`.${mapModoClasse[modo]}`).forEach(td => td.style.display = '');
+    
+    // Atualiza os cabeçalhos também
+    const ths = document.querySelectorAll('thead th');
+    ['preco-limpo', 'preco-sujo', 'preco-limpoparceiro', 'preco-sujoparceiro'].forEach((classe, i) => {
+      ths[i + 1].style.display = classe === mapModoClasse[modo] ? '' : 'none';
+    });
+  }
+}
+
 function atualizarTotais() {
   const modo = seletorModo.value;
+
+  atualizarVisibilidadeColunas(modo);
+
   if (!modo) {
     divTotais.innerHTML = "Selecione um modo de cálculo";
     return;
@@ -77,7 +103,7 @@ function atualizarTotais() {
   produtos.forEach((produto, i) => {
     const qtd = quantidades[i];
     if (qtd > 0) {
-      let valorUnit = getValorUnit(produto, modo);
+      const valorUnit = getValorUnit(produto, modo);
       const subtotal = valorUnit * qtd;
       total += subtotal;
       itensSelecionados.push(`${qtd}x ${produto.nome}`);
@@ -87,7 +113,7 @@ function atualizarTotais() {
   const comissao = total * 0.10;
 
   divTotais.innerHTML = `
-    🛒 <strong>Tipo de Venda:💵</strong> ${modo.replace("-", " ")}<br>
+    🛒 <strong>Tipo de Venda:</strong> ${modo.replace("-", " ")}<br>
     🧾 <strong>Itens:</strong> ${itensSelecionados.length > 0 ? itensSelecionados.join(', ') : 'Nenhum item selecionado'}<br>
     💵 <strong>Valor Total:</strong> R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}<br>
     💸 <strong>Comissão (10%):</strong> R$ ${comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
@@ -103,6 +129,9 @@ function limparFormulario() {
   document.getElementById("vendedor").value = '';
   seletorModo.value = '';
   divTotais.innerHTML = "Selecione um modo de cálculo";
+
+  // Oculta todas as colunas de preço ao resetar
+  atualizarVisibilidadeColunas('');
 }
 
 function enviarResumoManual() {
@@ -121,7 +150,7 @@ function enviarResumoManual() {
   produtos.forEach((produto, i) => {
     const qtd = quantidades[i];
     if (qtd > 0) {
-      let valorUnit = getValorUnit(produto, modo);
+      const valorUnit = getValorUnit(produto, modo);
       const subtotal = valorUnit * qtd;
       total += subtotal;
       listaItens.push(`${qtd}x ${produto.nome}`);
@@ -151,15 +180,12 @@ function enviarResumoManual() {
     body: JSON.stringify({ content: mensagem })
   }).then(() => {
     alert("✅ Pedido enviado com sucesso!");
-
-    // Salvar número do pedido no localStorage (incrementa se for número)
     let proximoNumero = parseInt(pedido);
     if (!isNaN(proximoNumero)) {
       localStorage.setItem("numeroPedido", proximoNumero + 1);
     } else {
       localStorage.setItem("numeroPedido", pedido);
     }
-
     botao.disabled = false;
     botao.innerText = "📤 Enviar para o Discord";
   }).catch(() => {
@@ -176,4 +202,5 @@ window.addEventListener("DOMContentLoaded", () => {
   if (numeroSalvo) {
     document.getElementById("numero-pedido").value = numeroSalvo;
   }
+  atualizarVisibilidadeColunas('');
 });
