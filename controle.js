@@ -32,7 +32,12 @@ produtos.forEach((produto, index) => {
     <td>R$ ${produto.sujo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
     <td>R$ ${produto.LimpoParceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
     <td>R$ ${produto.SujoParceiro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-    <td><input type="number" min="0" value="0" onchange="atualizaValor(${index}, this.value)"></td>
+    <td><div class="quantidade-wrapper">
+    <button onclick="incrementarQuantidade(${index}, -1)">−</button>
+    <input type="number" min="0" value="0" onchange="atualizaValor(${index}, this.value)" id="input-qtd-${index}">
+    <button onclick="incrementarQuantidade(${index}, 1)">+</button>
+  </div>
+</td>
   `;
   tabelaProdutos.appendChild(tr);
 });
@@ -50,6 +55,13 @@ function getValorUnit(produto, modo) {
 function atualizaValor(index, quantidade) {
   quantidades[index] = parseInt(quantidade) || 0;
   atualizarTotais();
+}
+function incrementarQuantidade(index, delta) {
+  const input = document.getElementById(`input-qtd-${index}`);
+  let valorAtual = parseInt(input.value) || 0;
+  let novoValor = Math.max(0, valorAtual + delta); // Evita negativos
+  input.value = novoValor;
+  atualizaValor(index, novoValor);
 }
 
 function atualizarTotais() {
