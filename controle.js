@@ -22,7 +22,6 @@ const quantidades = new Array(produtos.length).fill(0);
 const seletorModo = document.getElementById("mode-selector");
 const divTotais = document.getElementById("totais");
 const tabelaProdutos = document.getElementById("produtos");
-const webhookURL = "https://discord.com/api/webhooks/1400936108434391132/moZC9CNnNzNQlRfK9pjq8iIIucC7q3f-B0u4-VU40Z6GsW1F90PnYskV6BSvu-rDv03D";
 
 // Geração da tabela
 produtos.forEach((produto, index) => {
@@ -79,8 +78,7 @@ function atualizarTotais() {
     🛒 <strong>Tipo de Venda:💵</strong> ${modo.replace("-", " ")}<br>
     🧾 <strong>Itens:</strong> ${itensSelecionados.length > 0 ? itensSelecionados.join(', ') : 'Nenhum item selecionado'}<br>
     💵 <strong>Valor Total:</strong> R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}<br>
-    💸 <strong>Comissão (10%):</strong> R$ ${comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-  `;
+    💸 <strong>Comissão (10%):</strong> R$ ${comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 }
 
 function limparFormulario() {
@@ -119,6 +117,7 @@ function enviarResumoManual() {
   });
 
   if (listaItens.length === 0) return alert("Adicione pelo menos um item ao pedido.");
+
   const comissao = total * 0.10;
 
   const mensagem = `📄 **Nova Nota!**
@@ -140,7 +139,7 @@ function enviarResumoManual() {
     body: JSON.stringify({ content: mensagem })
   }).then(() => {
     alert("✅ Pedido enviado com sucesso!");
-  
+
     // Salvar número do pedido no localStorage (incrementa se for número)
     let proximoNumero = parseInt(pedido);
     if (!isNaN(proximoNumero)) {
@@ -148,7 +147,7 @@ function enviarResumoManual() {
     } else {
       localStorage.setItem("numeroPedido", pedido);
     }
-  
+
     botao.disabled = false;
     botao.innerText = "📤 Enviar para o Discord";
   }).catch(() => {
