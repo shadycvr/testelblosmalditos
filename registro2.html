@@ -4,71 +4,206 @@
   <meta charset="UTF-8">
   <title>Los Malditos - Controle de Produtos</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Arial', sans-serif;
       background-color: #1c1c1c;
       color: #eaeaea;
       padding: 20px;
+      margin: 0;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #444;
+
+    h1 {
       text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
     }
-    select, input, button {
+
+    .comander {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .linha-campos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
+
+    .input-group {
+      display: grid;
+      gap: 5px;
+      min-width: 200px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    input, select {
       background-color: #2c2c2c;
       color: #fff;
       border: 1px solid #666;
-      padding: 5px;
-      margin: 4px 0;
+      padding: 6px;
+      border-radius: 4px;
+      transition: border 0.3s, box-shadow 0.3s;
     }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #00ffc8;
+      box-shadow: 0 0 5px #00ffc86a;
+    }
+
+    button {
+      background-color: #3a3a3a;
+      color: #fff;
+      border: 1px solid #666;
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin: 10px 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #4caf50;
+      transform: scale(1.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #444;
+      text-align: center;
+    }
+
+    th {
+      background-color: #2d2d2d;
+      color: #fff;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #2a2a2a;
+    }
+
+    tbody tr:hover {
+      background-color: #383838;
+    }
+
+    input[type="number"] {
+      width: 60px;
+    }
+
     #totais {
-      margin-top: 20px;
+      margin-top: 25px;
       font-size: 18px;
       font-weight: bold;
+      text-align: center;
     }
-    .input-group {
-      margin-bottom: 10px;
+
+    .controle-venda {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .centralizado {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .linha-campos {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table, th, td {
+        font-size: 14px;
+      }
+
+      .controle-venda {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
 
+  <div class="sidebar">
+    <h3>📁 Navegação</h3>
+    <ul>
+      <li><a href="index.html">🔧 Registro de Desmanche</a></li>
+      <li><a href="registro2.html">📄 Calculadora
+      </a></li>
+    </ul>
+  </div>
+
   <h1>📦 Los Malditos - Controle de Produtos</h1>
 
-  <div class="input-group">
-    <label>🧾 Nº do Pedido:</label><br>
-    <input type="text" id="numero-pedido" placeholder="Ex: #0456">
-  </div>
+  <div class="comander">
+    <div class="linha-campos">
+      <div class="campo">
+        <label>🧾 Nº do Pedido:</label>
+        <input type="text" id="numero-pedido" placeholder="Ex: #0456">
+      </div>
+      <div class="campo">
+        <label>🧍 Comprador:</label>
+        <input type="text" id="comprador" placeholder="Nome do Comprador">
+      </div>
+      <div class="campo">
+        <label>👤 Vendedor:</label>
+        <input type="text" id="vendedor" placeholder="Nome do Vendedor">
+      </div>
+      <div class="campo">
+        <label>🎁 Brinde:</label>
+        <input type="text" id="brinde" placeholder="Ex: 1x Celular">
+      </div>
+    </div>
 
-  <div class="input-group">
-    <label>👤 Vendedor:</label><br>
-    <input type="text" id="vendedor" placeholder="Nome do Vendedor">
-  </div>
+    <div class="controle-venda">
+      <button onclick="limparFormulario()">🧹 Limpar Formulário</button>
 
-  <div class="input-group">
-    <label>🧍 Comprador:</label><br>
-    <input type="text" id="comprador" placeholder="Nome do Comprador">
-  </div>
+      <div class="input-group centralizado">
+        <label for="mode-selector">💰 Modo de Venda:</label>
+        <select id="mode-selector">
+          <option value="">-- Selecione --</option>
+          <option value="limpo">💸 Limpo</option>
+          <option value="sujo">🧼 Sujo</option>
+          <option value="Limpo-Parceiro">🤝 Limpo Parceiro</option>
+          <option value="Sujo-Parceiro">🧽 Sujo Parceiro</option>
+        </select>
+      </div>
 
-  <div class="input-group">
-    <label>🎁 Brinde:</label><br>
-    <input type="text" id="brinde" placeholder="Ex: 1x Celular">
+      <button onclick="enviarResumoManual()" id="botao-enviar">📤 Enviar para o Discord</button>
+    </div>
   </div>
-
-  <label for="mode-selector">💰 Modo de Venda:</label>
-  <select id="mode-selector">
-    <option value="">-- Selecione --</option>
-    <option value="limpo">💸 Limpo</option>
-    <option value="sujo">🧼 Sujo</option>
-    <option value="limpo-parc">🤝 Limpo Parceiro</option>
-    <option value="sujo-parc">🧽 Sujo Parceiro</option>
-  </select>
 
   <table>
     <thead>
@@ -85,140 +220,7 @@
   </table>
 
   <div id="totais">Selecione um modo de cálculo</div>
-  <br>
-  <button onclick="enviarResumoManual()">📤 Enviar para o Discord</button>
 
-  <script>
-    const produtos = [
-      { nome: "Cartão Raro", limpo: 15000, sujo: 12000, limpoParc: 11250, sujoParc: 9000 },
-      { nome: "Cartão in-Commum", limpo: 20000, sujo: 16000, limpoParc: 15000, sujoParc: 12000 },
-      { nome: "Cartão Comum", limpo: 30000, sujo: 25000, limpoParc: 22500, sujoParc: 18750 },
-      { nome: "Cartão Normal", limpo: 45000, sujo: 37500, limpoParc: 41250, sujoParc: 33750 },
-      { nome: "Cartão Lendário", limpo: 100000, sujo: 80000, limpoParc: 75000, sujoParc: 60000 },
-      { nome: "Pendrive", limpo: 9000, sujo: 6000, limpoParc: 7500, sujoParc: 6000 },
-      { nome: "Alicate", limpo: 4000, sujo: 3000, limpoParc: 3750, sujoParc: 3000 },
-      { nome: "Celular", limpo: 50000, sujo: 40000, limpoParc: 37500, sujoParc: 30000 },
-      { nome: "Bloqueador", limpo: 7000, sujo: 6000, limpoParc: 5250, sujoParc: 4500 },
-      { nome: "Notebook", limpo: 9000, sujo: 8000, limpoParc: 7500, sujoParc: 6000 },
-      { nome: "Ticket", limpo: 2000, sujo: 1500, limpoParc: 1000, sujoParc: 750 },
-      { nome: "Lockpick Alumínio", limpo: 3000, sujo: 2500, limpoParc: 2000, sujoParc: 1500 },
-      { nome: "Lockpick Cobre", limpo: 4000, sujo: 3000, limpoParc: 2500, sujoParc: 2000 },
-      { nome: "note", limpo: 15000, sujo: 12000, limpoParc: 11250, sujoParc: 9000 },
-      { nome: "not", limpo: 20000, sujo: 16000, limpoParc: 18000, sujoParc: 15000 },
-      { nome: "chip", limpo: 5000, sujo: 4000, limpoParc: 4500, sujoParc: 4000 },
-      { nome: "Chip", limpo: 3000, sujo: 2500, limpoParc: 2000, sujoParc: 1500 }
-    ];
-
-    const quantidades = new Array(produtos.length).fill(0);
-    const seletorModo = document.getElementById("mode-selector");
-    const divTotais = document.getElementById("totais");
-    const tabelaProdutos = document.getElementById("produtos");
-    const webhookURL = "https://discord.com/api/webhooks/1400936108434391132/moZC9CNnNzNQlRfK9pjq8iIIucC7q3f-B0u4-VU40Z6GsW1F90PnYskV6BSvu-rDv03D";
-
-    produtos.forEach((produto, index) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${produto.nome}</td>
-        <td>R$ ${produto.limpo}</td>
-        <td>R$ ${produto.sujo}</td>
-        <td>R$ ${produto.limpoParc}</td>
-        <td>R$ ${produto.sujoParc}</td>
-        <td><input type="number" min="0" value="0" onchange="atualizaValor(${index}, this.value)"></td>
-      `;
-      tabelaProdutos.appendChild(tr);
-    });
-
-    function atualizaValor(index, quantidade) {
-      quantidades[index] = parseInt(quantidade) || 0;
-      atualizarTotais();
-    }
-
-    function atualizarTotais() {
-      const modo = seletorModo.value;
-      let total = 0;
-
-      produtos.forEach((produto, i) => {
-        const qtd = quantidades[i];
-        if (qtd > 0) {
-          let valorUnit = 0;
-          if (modo === "limpo") valorUnit = produto.limpo;
-          else if (modo === "sujo") valorUnit = produto.sujo;
-          else if (modo === "limpo-parc") valorUnit = produto.limpoParc;
-          else if (modo === "sujo-parc") valorUnit = produto.sujoParc;
-
-          total += valorUnit * qtd;
-        }
-      });
-
-      const comissao = total * 0.10;
-      const totalFinal = total;
-
-divTotais.innerHTML = modo
-  ? `<div>💵 <strong>Valor Total:</strong> R$ ${totalFinal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
-     <div>💸 <strong>Comissão (10%):</strong> R$ ${comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>`
-  : "Selecione um modo de cálculo"; 
-    }
-
-    function enviarResumoManual() {
-      const modo = seletorModo.value;
-      const pedido = document.getElementById("numero-pedido").value || "N/D";
-      const vendedor = document.getElementById("vendedor").value || "N/D";
-      const comprador = document.getElementById("comprador").value || "N/D";
-      const brinde = document.getElementById("brinde").value || "#N/A";
-
-      if (!modo) {
-        alert("Selecione um modo de venda.");
-        return;
-      }
-
-      let total = 0;
-      let listaItens = [];
-
-      produtos.forEach((produto, i) => {
-        const qtd = quantidades[i];
-        if (qtd > 0) {
-          let valorUnit = 0;
-          if (modo === "limpo") valorUnit = produto.limpo;
-          else if (modo === "sujo") valorUnit = produto.sujo;
-          else if (modo === "limpo-parc") valorUnit = produto.limpoParc;
-          else if (modo === "sujo-parc") valorUnit = produto.sujoParc;
-
-          const subtotal = valorUnit * qtd;
-          total += subtotal;
-          listaItens.push(`${qtd}x ${produto.nome}`);
-        }
-      });
-
-      if (listaItens.length === 0) {
-        alert("Adicione pelo menos um item ao pedido.");
-        return;
-      }
-
-      const totalFinal = total;
-      const comissao = total * 0.10;
-
-      const mensagem = `📄 **Nova Nota!**\n\n` +
-        `🧾 **Pedido Nº**: ${pedido}\n` +
-        `👨‍💼 **Vendedor**: ${vendedor}\n` +
-        `🧑‍💼 **Comprador**: ${comprador}\n` +
-        `📦 **Itens**: ${listaItens.join(', ')}\n` +
-        `🎁 **Brinde**: ${brinde}\n` +
-        `💵 **Valor**: R$ ${totalFinal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n` +
-        `💸 **Comissão do Vendedor (10%)**: R$ ${comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-
-      fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: mensagem })
-      }).then(() => {
-        alert("✅ Pedido enviado com sucesso!");
-      }).catch(error => {
-        console.error("Erro ao enviar para o Discord:", error);
-        alert("❌ Erro ao enviar o pedido.");
-      });
-    }
-
-    seletorModo.addEventListener("change", atualizarTotais);
-  </script>
+  <script src="controle.js"></script>
 </body>
 </html>
