@@ -131,6 +131,8 @@
     <ul>
       <li><a href="index.html">🔧 Registro de Desmanche</a></li>
       <li><a href="registro2.html">📄 Calculadora</a></li>
+      <li><a href="registro-historico.html">🗃️ Hist. Desmanche</a></li>
+      <li><a href="historico-pedidos.html">📋 Hist. Pedidos</a></li>
     </ul>
   </div>
 
@@ -148,6 +150,15 @@
   </div>
 
   <script>
+    function salvarDesmancheLocal(quem, veiculo) {
+  const registros = JSON.parse(localStorage.getItem("registrosDesmanche")) || [];
+  registros.push({
+    quem,
+    veiculo,
+    data: new Date().toLocaleString()
+  });
+  localStorage.setItem("registrosDesmanche", JSON.stringify(registros));
+}
     let imageFile = null;
 
     const pasteBox = document.getElementById('pasteBox');
@@ -194,6 +205,7 @@
         });
 
         if (response.ok) {
+          salvarDesmancheLocal(quem, veiculo);
           status.textContent = "✅ Enviado com sucesso para o Discord!";
           pasteBox.textContent = "📸 Cole uma nova imagem com Ctrl+V";
           imageFile = null;

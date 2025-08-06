@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórico de Pedidos - Los Malditos</title>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #1c1c1c;
+      color: #e0e0e0;
+      margin: 0;
+      padding-left: 240px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      background-color: #2b2b2b;
+      border-right: 2px solid #444;
+      padding: 30px 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      color: #f1f1f1;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      color: #fff;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: #2b2b2b;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      border: 2px solid #444;
+    }
+
+    h2 {
+      font-family: 'Anton', sans-serif;
+      margin-bottom: 20px;
+      color: #f1f1f1;
+    }
+
+    .pedido {
+      padding: 15px;
+      border-bottom: 1px solid #555;
+    }
+
+    .pedido:last-child {
+      border-bottom: none;
+    }
+
+    .pedido strong {
+      color: #fff;
+    }
+
+    .limpar-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #8a1f1f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .limpar-btn:hover {
+      background: #a82626;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h3>📁 Navegação</h3>
+    <ul>
+      <li><a href="index.html">🔧 Registro de Desmanche</a></li>
+      <li><a href="registro2.html">📄 Calculadora</a></li>
+      <li><a href="registro-historico.html">🗃️ Hist. Desmanche</a></li>
+      <li><a href="historico-pedidos.html">📋 Hist. Pedidos</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2>📋 Histórico de Pedidos</h2>
+    <div id="lista-pedidos"></div>
+  </div>
+
+  <script>
+    function carregarPedidos() {
+      const lista = document.getElementById('lista-pedidos');
+      const pedidos = JSON.parse(localStorage.getItem("historicoPedidos")) || [];
+
+      if (pedidos.length === 0) {
+        lista.innerHTML = "<p>Nenhum pedido salvo.</p>";
+        return;
+      }
+
+      lista.innerHTML = pedidos.map(p => `
+        <div class="pedido">
+          <p><strong>📄 Pedido Nº:</strong> ${p.pedido}</p>
+          <p><strong>👤 Vendedor:</strong> ${p.vendedor}</p>
+          <p><strong>🧑 Comprador:</strong> ${p.comprador}</p>
+          <p><strong>📦 Itens:</strong> ${p.itens.join(', ')}</p>
+          <p><strong>🎁 Brinde:</strong> ${p.brinde}</p>
+          <p><strong>💰 Total:</strong> R$ ${p.total.toLocaleString('pt-BR')}</p>
+          <p><strong>💸 Comissão:</strong> R$ ${p.comissao.toLocaleString('pt-BR')}</p>
+          <p><strong>📅 Data:</strong> ${p.data}</p>
+        </div>
+      `).join('');
+    }
+
+
+    window.onload = carregarPedidos;
+  </script>
+
+</body>
+</html>

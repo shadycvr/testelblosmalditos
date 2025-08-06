@@ -52,6 +52,10 @@ if (numeroSalvo) {
       </td>
     `;
     tabelaProdutos.appendChild(tr);
+    // Resetar inputs de quantidade e texto ao carregar
+    document.querySelectorAll('input[type="number"]').forEach(input => input.value = 0);
+    document.getElementById('totais').innerText = 'Selecione um modo de cálculo';
+
   });
 
   tabelaProdutos.addEventListener("click", (e) => {
@@ -126,7 +130,11 @@ if (numeroSalvo) {
     }
   }
 });
-
+function salvarPedidoLocal(pedidoData) {
+  const pedidos = JSON.parse(localStorage.getItem("historicoPedidos")) || [];
+  pedidos.push(pedidoData);
+  localStorage.setItem("historicoPedidos", JSON.stringify(pedidos));
+}
 function enviarResumoManual() {
   const seletorModo = document.getElementById("mode-selector"); // ← ADICIONADA AQUI!
   const modo = seletorModo.value;
@@ -179,6 +187,22 @@ if (!isNaN(proximoNumero)) {
     body: JSON.stringify({ content: mensagem })
   }).then(() => {
     alert("✅ Pedido enviado com sucesso!");
+    console.log("🔒 Salvando localmente:", {
+      pedido, vendedor, comprador, brinde, itens: listaItens, modo, total, comissao
+    });
+
+
+   salvarPedidoLocal({
+   pedido: pedido,
+   vendedor: vendedor,
+   comprador: comprador,
+   brinde: brinde,
+   itens: listaItens,
+   modo: modo,
+   total: total,
+   comissao: comissao,
+   data: new Date().toLocaleString()
+   });
 
     // Salvar número do pedido automaticamente
     let proximoNumero = parseInt(pedido);
